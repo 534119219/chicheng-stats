@@ -1,12 +1,14 @@
 # chicheng-stats
 
-dsh Web 全局用量统计插件：在侧边栏底部展示 **今日请求 / 总请求 / 今日Token / 总Token**，跨所有会话（包括 headless 定时任务等其他进程产生的会话）。
+dsh Web 全局用量统计插件：在左侧栏底部（设置按钮下方）显示一行小字 **今日请求 | 总请求 | 今日Token | 总Token**，点击打开完整的用量统计面板（Sub2API 风格的使用记录）。跨所有会话统计，包括 headless 定时任务等其他进程产生的会话。
 
 ## 功能特性
 
-- **实时累计**：订阅 `session/event`，按 `(turn, step)` 去重计数每次 provider 请求的用量样本；
+- **实时累计**：订阅 `session/event`，按 `(turn, step)` 去重计数每次 provider 请求的用量样本，并记录逐请求明细（时间 / 模型 / 会话 / 输入 / 缓存读 / 缓存写 / 输出）；
+- **模型归属**：从 `request/header` 快照追踪每个请求使用的模型，支撑模型分布统计；
+- **统计面板**：点击侧边栏的用量行弹出面板——时间范围选择（今日 / 近7天 / 近30天 / 本月 / 全部）、概览、模型分布、Token 使用趋势图（SVG）、用量明细表；
 - **历史回填 + 增量扫描**：启动后扫描 `$DSH_HOME/sessions` 下全部会话日志（zstd 多帧拼接，按帧切分后逐帧解压），只处理越过持久化 seq 水位的事件，与实时计数天然去重；此后每 5 分钟轻扫一次，覆盖其他进程写入的会话；
-- **持久化**：统计写入 `$DSH_HOME/stats/store.json`（防抖原子写入），重启不丢；
+- **持久化**：聚合写入 `$DSH_HOME/stats/store.json`，明细写入 `$DSH_HOME/stats/requests.json`（防抖原子写入），重启不丢；
 - **只读安全**：不修改任何会话数据，对模型体验 / KV Cache 零影响。
 
 ## 安装（web profile）
@@ -70,7 +72,7 @@ pnpm install
 dsh web
 ```
 
-浏览器刷新页面，侧边栏底部（"设置"按钮上方）出现用量卡片；启动后约 3 秒内自动回填历史数据（回填期间卡片显示"正在回填历史数据…"）。
+浏览器刷新页面，侧边栏底部（"设置"按钮下方）出现一行用量小字，点击可打开完整统计面板；启动后约 3 秒内自动回填历史数据（回填期间悬停提示"正在回填历史数据…"）。
 
 也可直接验证 API：
 
@@ -86,14 +88,24 @@ curl -X POST http://127.0.0.1:3080/stats/api/summary \
 {
   "ok": true,
   "value": {
-    "today": { "requests": 886, "tokens": 184349255 },
-    "total": { "requests": 1824, "tokens": 424899653 },
+    "today": { "requests": 2061, "tokens": 583235886 },
+    "total": { "requests": 2999, "tokens": 823786284 },
     "todayKey": "2026-08-16",
     "since": "2026-08-16T08:00:00.000Z",
-    "backfill": { "done": true, "scannedSessions": 31, "scannedEvents": 3660 }
+    "backfill": { "done": true, "scannedSessions": 31, "scannedEvents": 6016 }
   }
 }
 ```
+
+统计面板数据接口：
+
+```bash
+curl -X POST http://127.0.0.1:3080/stats/api/usage \
+  -H "content-type: application/json" \
+  -d '{"range":"7d"}'
+```
+
+`range` 取值：`today`（默认）/ `7d` / `30d` / `month` / `all`。返回概览（`totals`）、模型分布（`models`）、趋势（`trend`，今日按小时、其余按天）与用量明细（`details`，最近 300 条）。
 
 ## 统计口径
 

@@ -2,6 +2,22 @@
 
 dsh Web 全局用量统计插件：在左侧栏"设置"按钮旁显示用量组件（一行小字或卡片，**可在 设置 → 用量统计 中自由配置**），点击打开完整的用量统计面板（Sub2API 风格的使用记录）。跨所有会话统计，包括 headless 定时任务等其他进程产生的会话。
 
+## 界面预览
+
+### 侧边栏组件（卡片模式 / 文字模式）
+
+![卡片模式](https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/card-mode.png)
+![文字模式](https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/text-mode.png)
+
+### 用量统计面板
+
+![用量统计弹窗](https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/usage-dialog.png)
+
+### 设置页（卡片模式 / 文字模式）
+
+![卡片设置](https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/card-settings.png)
+![文字设置](https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/text-settings.png)
+
 ## 功能特性
 
 - **实时累计**：订阅 `session/event`，按 `(turn, step)` 去重计数每次 provider 请求的用量样本，并记录逐请求明细（时间 / 模型 / 会话 / 输入 / 缓存读 / 缓存写 / 输出）；

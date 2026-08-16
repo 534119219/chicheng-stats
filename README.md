@@ -1,15 +1,32 @@
 # chicheng-stats
 
-dsh Web 全局用量统计插件：在左侧栏底部（设置按钮下方）显示一行小字 **今日请求 | 总请求 | 今日Token | 总Token**，点击打开完整的用量统计面板（Sub2API 风格的使用记录）。跨所有会话统计，包括 headless 定时任务等其他进程产生的会话。
+dsh Web 全局用量统计插件：在左侧栏"设置"按钮旁显示用量组件（一行小字或卡片，**可在 设置 → 用量统计 中自由配置**），点击打开完整的用量统计面板（Sub2API 风格的使用记录）。跨所有会话统计，包括 headless 定时任务等其他进程产生的会话。
 
 ## 功能特性
 
 - **实时累计**：订阅 `session/event`，按 `(turn, step)` 去重计数每次 provider 请求的用量样本，并记录逐请求明细（时间 / 模型 / 会话 / 输入 / 缓存读 / 缓存写 / 输出）；
 - **模型归属**：从 `request/header` 快照追踪每个请求使用的模型，支撑模型分布统计；
-- **统计面板**：点击侧边栏的用量行弹出面板——时间范围选择（今日 / 近7天 / 近30天 / 本月 / 全部）、概览、模型分布、Token 使用趋势图（SVG）、用量明细表；
+- **可配置侧边栏组件**：设置 → 用量统计 中可调整——
+  - **显示模式**：文字（自定义模板 + 占位符 + 字号）或卡片（卡片大小 / 标题字号 / 数值字号 / 间隔）；
+  - **位置**：设置按钮上方或下方；
+  - 修改实时生效（约 5 秒内），无需重启；
+- **统计面板**：点击组件弹出面板——时间范围选择（今日 / 近7天 / 近30天 / 本月 / 全部）、概览、模型分布、Token 使用趋势图（SVG）、用量明细表；
 - **历史回填 + 增量扫描**：启动后扫描 `$DSH_HOME/sessions` 下全部会话日志（zstd 多帧拼接，按帧切分后逐帧解压），只处理越过持久化 seq 水位的事件，与实时计数天然去重；此后每 5 分钟轻扫一次，覆盖其他进程写入的会话；
-- **持久化**：聚合写入 `$DSH_HOME/stats/store.json`，明细写入 `$DSH_HOME/stats/requests.json`（防抖原子写入），重启不丢；
+- **持久化**：聚合写入 `$DSH_HOME/stats/store.json`，明细写入 `$DSH_HOME/stats/requests.json`，组件设置写入 `$DSH_HOME/stats/settings.json`（均防抖原子写入），重启不丢；
 - **只读安全**：不修改任何会话数据，对模型体验 / KV Cache 零影响。
+
+## 文字模板占位符
+
+| 占位符 | 含义 | 占位符 | 含义 |
+|---|---|---|---|
+| `{todayRequests}` | 今日请求 | `{totalRequests}` | 总请求 |
+| `{todayTokens}` | 今日 Token | `{totalTokens}` | 总 Token |
+| `{todayInput}` | 今日输入 | `{totalInput}` | 总输入 |
+| `{todayOutput}` | 今日输出 | `{totalOutput}` | 总输出 |
+| `{todayCacheRead}` | 今日缓存读 | `{totalCacheRead}` | 总缓存读 |
+| `{todayCacheWrite}` | 今日缓存写 | `{totalCacheWrite}` | 总缓存写 |
+
+默认模板：`今日请求：{todayRequests} | 总请求：{totalRequests} | 今日Token：{todayTokens} | 总Token：{totalTokens}`
 
 ## 安装（web profile）
 

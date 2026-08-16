@@ -8,9 +8,9 @@ dsh Web 全局用量统计插件：在左侧栏"设置"按钮旁显示用量组�
 |---|---|
 | 侧边栏 · 卡片模式（4 列） | ![卡片模式](https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/card-mode.png) |
 | 侧边栏 · 文字模式 | ![文字模式](https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/text-mode.png) |
-| 用量统计弹窗 | ![用量统计](https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/usage-dialog.png) |
-| 设置页 · 卡片模式配置 | ![卡片设置](https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/card-settings.png) |
-| 设置页 · 文字模式配置 | ![文字设置](https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/text-settings.png) |
+| 用量统计弹窗 | <img src="https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/usage-dialog.png" alt="用量统计" width="720"> |
+| 设置页 · 卡片模式配置 | <img src="https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/card-settings.png" alt="卡片设置" width="360"> |
+| 设置页 · 文字模式配置 | <img src="https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/text-settings.png" alt="文字设置" width="360"> |
 
 ## 功能特性
 

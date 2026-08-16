@@ -1,6 +1,6 @@
 {
   "name": "chicheng-stats",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "dsh 全局用量统计插件：高度可配置侧边栏组件（文字/卡片）+ 统计面板（模型分布/趋势/明细）",
   "type": "module",
   "main": "lib/index.js",

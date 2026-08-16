@@ -2,16 +2,6 @@
 
 dsh Web 全局用量统计插件：在左侧栏"设置"按钮旁显示用量组件（一行小字或卡片，**可在 设置 → 用量统计 中自由配置**），点击打开完整的用量统计面板（Sub2API 风格的使用记录）。跨所有会话统计，包括 headless 定时任务等其他进程产生的会话。
 
-## 界面预览
-
-| 场景 | 截图 |
-|---|---|
-| 侧边栏 · 卡片模式（4 列） | ![卡片模式](https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/card-mode.png) |
-| 侧边栏 · 文字模式 | ![文字模式](https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/text-mode.png) |
-| 用量统计弹窗 | <img src="https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/usage-dialog.png" alt="用量统计" width="720"> |
-| 设置页 · 卡片模式配置 | <img src="https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/card-settings.png" alt="卡片设置" width="360"> |
-| 设置页 · 文字模式配置 | <img src="https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/text-settings.png" alt="文字设置" width="360"> |
-
 ## 功能特性
 
 - **实时累计**：订阅 `session/event`，按 `(turn, step)` 去重计数每次 provider 请求的用量样本，并记录逐请求明细（时间 / 模型 / 会话 / 输入 / 缓存读 / 缓存写 / 输出）；
@@ -25,6 +15,16 @@ dsh Web 全局用量统计插件：在左侧栏"设置"按钮旁显示用量组�
 - **历史回填 + 增量扫描**：启动后扫描 `$DSH_HOME/sessions` 下全部会话日志（zstd 多帧拼接，按帧切分后逐帧解压），只处理越过持久化 seq 水位的事件，与实时计数天然去重；此后每 5 分钟轻扫一次，覆盖其他进程写入的会话；
 - **持久化**：聚合写入 `$DSH_HOME/stats/store.json`，明细写入 `$DSH_HOME/stats/requests.json`，组件设置写入 `$DSH_HOME/stats/settings.json`（均防抖原子写入），重启不丢；
 - **只读安全**：不修改任何会话数据，对模型体验 / KV Cache 零影响。
+
+## 界面预览
+
+| 场景 | 截图 |
+|---|---|
+| 侧边栏 · 卡片模式（4 列） | <img src="https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/card-mode.png" alt="卡片模式" width="360"> |
+| 侧边栏 · 文字模式 | <img src="https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/text-mode.png" alt="文字模式" width="360"> |
+| 用量统计弹窗 | <img src="https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/usage-dialog.png" alt="用量统计" width="360"> |
+| 设置页 · 卡片模式配置 | <img src="https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/card-settings.png" alt="卡片设置" width="360"> |
+| 设置页 · 文字模式配置 | <img src="https://raw.githubusercontent.com/534119219/chicheng-stats/main/assets/text-settings.png" alt="文字设置" width="360"> |
 
 ## 文字模板占位符
 

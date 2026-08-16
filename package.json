@@ -1,6 +1,6 @@
 {
   "name": "chicheng-stats",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "dsh 全局用量统计插件：侧边栏展示今日/总请求数与今日/总 Token 数（跨所有会话）",
   "type": "module",
   "main": "lib/index.js",

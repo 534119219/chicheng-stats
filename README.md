@@ -50,7 +50,9 @@ dsh Web 全局用量统计插件：在左侧栏"设置"按钮旁显示用量组�
 鼠标悬停侧边栏组件时，会显示 DeepSeek 开放平台的剩余金额 / 今日消费 / 今日 Token / 今日请求；此数据不会出现在统计弹窗里。
 
 - **余额**：读取 `DEEPSEEK_API_KEY`（设置 → 模型，或 `~/.dsh/.credentials.yaml`）。
-- **今日消费 / Token（官方）**：可选配置 `DEEPSEEK_PLATFORM_TOKEN`——登录 platform.deepseek.com → DevTools Console → `JSON.parse(localStorage.getItem('userToken')).value`，写入 `~/.dsh/.credentials.yaml`：
+- **今日消费 / Token（官方）**：可选配置 `DEEPSEEK_PLATFORM_TOKEN`。
+  - 推荐：在 **设置 → 用量统计 → DeepSeek 平台 UserToken** 中点击「自动获取」，插件会扫描本机 Chrome / Edge 浏览器里已登录的 `userToken` 并自动保存；找不到时提示先登录 platform.deepseek.com 再试。
+  - 也可手动：登录 platform.deepseek.com → DevTools Console → `JSON.parse(localStorage.getItem('userToken')).value`，写入 `~/.dsh/.credentials.yaml`：
 
   ```yaml
   version: 1

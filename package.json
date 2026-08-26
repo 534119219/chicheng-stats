@@ -1,6 +1,6 @@
 {
   "name": "chicheng-stats",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "DSH 全局用量统计插件：高度可配置侧边栏组件（文字/卡片）+ 统计面板（提供方筛选·显示名称/模型分布/趋势/首字节/耗时明细）+ DeepSeek 平台悬停余额/消费提示",
   "type": "module",
   "main": "lib/index.js",

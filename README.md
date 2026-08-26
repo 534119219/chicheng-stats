@@ -12,6 +12,7 @@ dsh Web 全局用量统计插件：在左侧栏"设置"按钮旁显示用量组�
   - **卡片模式**：卡片大小、每行列数（1/2/4）、显示项目（勾选）、标题字号与颜色、数值字号与颜色、间隔、圆角、边框粗细与颜色、背景颜色（默认 `#43454A`）；
   - 修改实时生效（约 5 秒内），无需重启；
 - **统计面板**：点击组件弹出面板——时间范围选择（今日 / 近7天 / 近30天 / 本月 / 全部）、**提供方筛选**（全部 / 各提供方，可查看单一提供方用量）、概览、模型分布、Token 使用趋势图（SVG）、用量明细表（含首字节 / 总耗时）；
+- **DeepSeek 平台悬停提示**：鼠标悬停侧边栏组件（文字/卡片/收起图标）时浮动显示 DeepSeek 开放平台数据——剩余金额、今日消费、今日 Token、今日请求。余额来自官方 `/user/balance`（读取 `DEEPSEEK_API_KEY`）；配置 `DEEPSEEK_PLATFORM_TOKEN` 后今日消费/Token 使用平台官方明细，否则今日消费为余额差估算（带 `≈`），Token 回退为本地统计。数据只在悬停时展示，**不进统计弹窗**；
 - **历史回填 + 增量扫描**：启动后扫描 `$DSH_HOME/sessions` 下全部会话日志（zstd 多帧拼接，按帧切分后逐帧解压），只处理越过持久化 seq 水位的事件，与实时计数天然去重；此后每 5 分钟轻扫一次，覆盖其他进程写入的会话；
 - **持久化**：聚合写入 `$DSH_HOME/stats/store.json`，明细写入 `$DSH_HOME/stats/requests.json`，组件设置写入 `$DSH_HOME/stats/settings.json`（均防抖原子写入），重启不丢；
 - **只读安全**：不修改任何会话数据，对模型体验 / KV Cache 零影响。
@@ -43,6 +44,23 @@ dsh Web 全局用量统计插件：在左侧栏"设置"按钮旁显示用量组�
 | `{todayCacheWrite}` | 今日缓存写 | `{totalCacheWrite}` | 总缓存写 |
 
 默认模板：`今日请求：{todayRequests} | 总请求：{totalRequests} | 今日Token：{todayTokens} | 总Token：{totalTokens}`
+
+## DeepSeek 平台数据（悬停提示）
+
+鼠标悬停侧边栏组件时，会显示 DeepSeek 开放平台的剩余金额 / 今日消费 / 今日 Token / 今日请求；此数据不会出现在统计弹窗里。
+
+- **余额**：读取 `DEEPSEEK_API_KEY`（设置 → 模型，或 `~/.dsh/.credentials.yaml`）。
+- **今日消费 / Token（官方）**：可选配置 `DEEPSEEK_PLATFORM_TOKEN`——登录 platform.deepseek.com → DevTools Console → `JSON.parse(localStorage.getItem('userToken')).value`，写入 `~/.dsh/.credentials.yaml`：
+
+  ```yaml
+  version: 1
+  refs:
+    DEEPSEEK_API_KEY: sk-...
+    DEEPSEEK_PLATFORM_TOKEN: <platform userToken>
+  ```
+
+- **未配置平台 token 时**：今日消费按余额差估算（显示 `≈`），今日 Token / 请求回退为本地统计。
+- Host 端接口 `POST /stats/api/deepseek` 有 60 秒缓存；API Key 与平台 token 不出本机。
 
 ## 安装（web profile）
 
